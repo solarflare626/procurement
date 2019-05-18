@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\invitation;
+use App\lot;
 
 class PagesController extends Controller
 {
@@ -18,7 +19,11 @@ class PagesController extends Controller
         return view('pages.createinvitation')->with('title', $title);
     }
     public function assignlots(invitation $invitation){
-        return view('pages.assignlots', [ 'title'=>'Assign Lots','invitation' => $invitation]);
+        $lots = lot::all();
+        return view('pages.assignlots', [ 'title'=>'Assign Lots',
+        'invitation' => $invitation,
+        'lots' => $lots,
+        ]);
     }
    
     public function invitation() {

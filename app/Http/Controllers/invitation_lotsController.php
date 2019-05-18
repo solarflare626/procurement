@@ -81,4 +81,6 @@ class invitation_lotsController extends Controller
     {
         //
     }
+
+    
 }

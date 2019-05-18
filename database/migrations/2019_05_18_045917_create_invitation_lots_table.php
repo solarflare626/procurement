@@ -15,11 +15,11 @@ class CreateInvitationLotsTable extends Migration
     {
         Schema::create('invitation_lots', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('bid_submitted');
-            $table->string('receiver');
-            $table->double('bid_amount',8,2);
-            $table->string('status');
-            $table->dateTime('bid_opened');
+            $table->dateTime('bid_submitted')->nullable();
+            $table->string('receiver')->nullable();
+            $table->double('bid_amount',20,2)->nullable();
+            $table->string('status')->nullable();
+            $table->dateTime('bid_opened')->nullable();
             $table->unsignedBigInteger('invitation_id');
             $table->foreign('invitation_id')->references('id')->on('invitations')->onDelete('cascade');
             $table->unsignedBigInteger('lot_id');

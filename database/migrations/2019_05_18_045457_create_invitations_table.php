@@ -19,9 +19,9 @@ class CreateInvitationsTable extends Migration
             $table->string('procurement_type');
             $table->string('reference_no');
             $table->string('location');
-            $table->double('approved_budget',8,2);
+            $table->double('approved_budget',20,2);
             $table->string('fund_source');
-            $table->double('bidder_fee',8,2);
+            $table->double('bidder_fee',20,2);
             $table->string('delivery_period');
             $table->string('delivery_status');
             // $table->unsignedBigInteger('supplier_id');

@@ -6,19 +6,12 @@
 <div class="container">
     <div class="text-center">
         <h1>{{$title}} 
-            <div class="text-right"> <td>
-                <a href="/print"><button type="button" class="btn btn-primary">Print</button></a></td>
-                <td>
-                <a href="/download"><button type="button" class="btn btn-warning">Download</button></a></td>
-                <td>
-                <a href="/createinvitation"><button type="button" class="btn btn-default">Cancel</button></a></td>
-                </td></h1>
+            <div class="text-right"> </h1>
             </div>
 <br>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Open modal
-      </button>
-<div class = "modal" id = "myModal">
+
+
+<a href="createinvitation" class="btn btn-primary"> Create Invitation </a>
 
 </div>    
     {{-- <div class="row">
@@ -74,7 +67,10 @@
                             { data: 'delivery_period', name: 'delivery_period', class: 'text-center' },
                             { data: 'delivery_status', name: 'delivery_status', class: 'text-center' },
                             { data: '', render: function ( data, type, row ) {
-                                    return '<a class="btn btn-primary" href="invitations/'+row.id+'/assign/lots">Lots</a>';
+                                    a =  '<div class="row"><a class="btn btn-primary" href="invitations/'+row.id+'/assign/lots"><span class="glyphicon glyphicon-pencil"></span></a>';
+                                    a+= '<a class="btn btn-info" href="api/print/invitation/'+row.id+'"><span class="glyphicon glyphicon-print"></span></a>';
+                                    a += '</div>';
+                                    return a;
                                 }
                             }
                             

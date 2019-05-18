@@ -13,6 +13,7 @@
 use App\lot;
 use App\App_items;
 use App\invitation;
+use App\invitation_lot;
 use Illuminate\Http\Request;
 Auth::routes();
 
@@ -20,6 +21,12 @@ Route::get('app-items', 'app_itemsController@index');
 Route::get('app-data', 'app_itemsController@getData');
 Route::get('invitations-data', 'invitationsController@getData');
 Route::get('/create', 'app_itemsController@create');
+Route::get('/api/print/invitation/{invitation}', function(invitation $invitation){
+    return view('pages.printinvitation',[
+        'invitation'=>$invitation
+    
+    ]);
+});
 
 // Route::get('/', 'PagesController@index');
 Route::get('/createinvitation', 'PagesController@createinvitation');
@@ -51,6 +58,12 @@ Route::post('/api/item/{item}/assign/lot/{lot}', function ($itemID,$lotNumber) {
     return response()->json($item);
 });
 
+Route::get('/api/lots/{lot}', function (lot $lot) {
+    
+    $lot->items = $lot->items();
+    return response()->json($lot);
+});
+
 Route::post('/createinvitation',  function (Request $request) {
 
     $invitation = invitation::create(array(
@@ -65,4 +78,15 @@ Route::post('/createinvitation',  function (Request $request) {
         'delivery_status' => 'pending'
     ));
     return redirect('invitations/'.$invitation->id.'/assign/lots');;
+});
+
+Route::post('/invitations/{invitation}/assign/lots/submit',  function (Request $request, invitation $invitation) {
+
+    foreach ($request->input('lots') as $index => $lot) {
+       invitation_lot::create(array(
+            'invitation_id' => $invitation->id,
+            'lot_id' => $lot
+        ));
+    }
+    return redirect('invitation/');
 });

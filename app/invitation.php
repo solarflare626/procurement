@@ -11,7 +11,8 @@ class invitation extends Model
     //
 
     public function invitation_lots() {
-        $data = invitation_lots::where('invitation_id', '=', $this->id)->get();
-        return $data;
+        // $data = invitation_lot::where('invitation_id', '=', $this->id)->get();
+        // return $data;
+        return $this->hasMany('App\invitation_lot', 'invitation_id');
     }
 }
