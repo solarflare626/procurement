@@ -12,14 +12,19 @@
 */
 use App\lot;
 use App\App_items;
+use App\invitation;
+use Illuminate\Http\Request;
 Auth::routes();
 
 Route::get('app-items', 'app_itemsController@index');
 Route::get('app-data', 'app_itemsController@getData');
+Route::get('invitations-data', 'invitationsController@getData');
 Route::get('/create', 'app_itemsController@create');
 
 // Route::get('/', 'PagesController@index');
 Route::get('/createinvitation', 'PagesController@createinvitation');
+Route::get('/invitations/{invitation}/assign/lots','PagesController@assignlots' );
+
 Route::get('/invitation', 'PagesController@invitation');
 Route::get('/bidding', 'PagesController@bidding');
 Route::get('/bidderlist', 'PagesController@bidderlist');
@@ -44,4 +49,20 @@ Route::post('/api/item/{item}/assign/lot/{lot}', function ($itemID,$lotNumber) {
         array('lot_id'=>$lot->id)
     );
     return response()->json($item);
+});
+
+Route::post('/createinvitation',  function (Request $request) {
+
+    $invitation = invitation::create(array(
+        'project_name' => $request->input('project_name'),
+        'procurement_type' => $request->input('procurement_type'),
+        'reference_no' => $request->input('reference_no'),
+        'location' => $request->input('location'),
+        'approved_budget' => $request->input('approved_budget'),
+        'fund_source' => $request->input('fund_source'),
+        'bidder_fee' => $request->input('bidder_fee'),
+        'delivery_period' => $request->input('delivery_period'),
+        'delivery_status' => 'pending'
+    ));
+    return redirect('invitations/'.$invitation->id.'/assign/lots');;
 });

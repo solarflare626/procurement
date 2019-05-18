@@ -35,89 +35,53 @@
     <br>
 
     <div class="container">
-            <table class="table table-hover">
+            <table id="invitations_datatable" class="table table-border">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col" style="width:5%"><center>No.</center></th>
-                        <th scope="col" style="width:20%"><center>Item Description</center></th>
-                        <th scope="col" style="width:15%"><center>Specification</center></th>
-                        <th scope="col" style="width:5%"><center>Unit</center></th>
-                        <th scope="col" style="width:20%"><center>Unit Price</center></th>
-                        <th scope="col" style="width:8%"><center>Quantity</center></th>
-                        <th scope="col" style="width:30%"><center>Amount</center></th>
+                        <th><center>No.</center></th>
+                        <th><center>Name of Project</center></th>
+                        <th><center>Procurement Type</center></th>
+                        <th><center>Reference</center></th>
+                        <th><center>Location</center></th>
+                        <th><center>Approved Budget</center></th>
+                        <th><center>Source of Fund</center></th>
+                        <th><center>Non-refundable Bidder Fee</center></th>
+                        <th><center>Delivery Period</center></th>
+                        <th><center>Status</center></th>
+                        <th><center>Action</center></th>
                     </tr>
-                    </thead>
-                    <th scope="col" style="width:10%"><center>Lot 1</center></th>
-                        <th scope="col" style="width:10%"><center></center></th>
-                        <th scope="col" style="width:10%"><center></center></th>
-                        <th scope="col" style="width:5%"><center></center></th>
-                        <th scope="col" style="width:5%"><center></center></th>
-                    <tbody>
-        
-                    <tr>
-                        <th scope="row"><center>1</th></center>
-                        <td data-toggle="tooltip" title="Items!"><center>Blank Check</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center></center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>pc</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>P 750.00</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>16</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>P 12,000.00</center></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><center>2</center></th>
-                        <td data-toggle="tooltip" title="Items!"><center>Air Condition</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>9x5 inch</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>pc</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>P 35,000.00</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>3</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>P 100,000.00</center></td>
-                        
-                    </tr>
-                    <tr>
-                        <th scope="row"><center>3</center></th>
-                        <td data-toggle="tooltip" title="Items!"><center>Bond paper</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>Short</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>box</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>P 300.00</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>5</center></td>
-                        <td data-toggle="tooltip" title="Items!"><center>P 1,500.00</center></td>
-                    </tr>
-                        <th scope="col" style="width:10%"><center>Lot 2</center></th>
-                            <th scope="col" style="width:10%"><center></center></th>
-                            <th scope="col" style="width:10%"><center></center></th>
-                            <th scope="col" style="width:5%"><center></center></th>
-                            <th scope="col" style="width:5%"><center></center></th>
-                        <tbody>
-            
-                        <tr>
-                            <th scope="row"><center>1</th></center>
-                            <td data-toggle="tooltip" title="Items!"><center>Pencil</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>Monggol 2</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>box</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>P 130.00</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>20</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>P 2,600.00</center></td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><center>2</center></th>
-                            <td data-toggle="tooltip" title="Items!"><center>Ballpen</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>G-tech</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>box</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>P 800.00</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>10</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>P 8,000.00</center></td>
-                            
-                        </tr>
-                        <tr>
-                            <th scope="row"><center>3</center></th>
-                            <td data-toggle="tooltip" title="Items!"><center>Whiteboard marker</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>Color black</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>box</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>P 600.00</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>8</center></td>
-                            <td data-toggle="tooltip" title="Items!"><center>P 4,800.00</center></td>
-                        </tr>
-                    </tbody>
-                </table>
+                </thead>
+            </table>
     </div>
+    <script>
+            $(document).ready( function () {
+            $('#invitations_datatable').DataTable().destroy();
+            $('#invitations_datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ url('invitations-data') }}",
+                type: "GET",
+                dataType: "json",
+                columns: [
+                            { data: 'id', name: 'id', class: 'text-center' },
+                            { data: 'project_name', name: 'project_name', class: 'text-center'},
+                            { data: 'procurement_type', name: 'procurement_type', class: 'text-center' },
+                            { data: 'reference_no', name: 'reference_no', class: 'text-center' },
+                            { data: 'location', name: 'location', class: 'text-center' },
+                            { data: 'approved_budget', name: 'approved_budget', class: 'text-center' },
+                            { data: 'fund_source', name: 'fund_source', class: 'text-center' },
+                            { data: 'bidder_fee', name: 'bidder_fee', class: 'text-center' },
+                            { data: 'delivery_period', name: 'delivery_period', class: 'text-center' },
+                            { data: 'delivery_status', name: 'delivery_status', class: 'text-center' },
+                            { data: '', render: function ( data, type, row ) {
+                                    return '<a class="btn btn-primary" href="invitations/'+row.id+'/assign/lots">Lots</a>';
+                                }
+                            }
+                            
+                            
+                        ],
+                       
+                });
+            });
+    </script>
 @endsection

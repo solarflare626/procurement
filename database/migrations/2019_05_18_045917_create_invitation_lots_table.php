@@ -20,6 +20,11 @@ class CreateInvitationLotsTable extends Migration
             $table->double('bid_amount',8,2);
             $table->string('status');
             $table->dateTime('bid_opened');
+            $table->unsignedBigInteger('invitation_id');
+            $table->foreign('invitation_id')->references('id')->on('invitations')->onDelete('cascade');
+            $table->unsignedBigInteger('lot_id');
+            $table->foreign('lot_id')->references('id')->on('lots')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

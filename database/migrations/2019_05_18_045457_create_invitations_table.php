@@ -15,15 +15,17 @@ class CreateInvitationsTable extends Migration
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('procurement_type');
             $table->string('project_name');
-            $table->string('fund_source');
-            $table->string('delivery_status');
+            $table->string('procurement_type');
+            $table->string('reference_no');
             $table->string('location');
-            $table->string('delivery_period');
             $table->double('approved_budget',8,2);
-            $table->unsignedBigInteger('supplier_id');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->string('fund_source');
+            $table->double('bidder_fee',8,2);
+            $table->string('delivery_period');
+            $table->string('delivery_status');
+            // $table->unsignedBigInteger('supplier_id');
+            // $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->timestamps();
         });
     }
