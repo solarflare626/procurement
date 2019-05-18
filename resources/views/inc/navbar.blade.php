@@ -11,18 +11,22 @@
             {{-- <li class="nav-item">
                 <a class="nav-link" href="/">APP<span class="sr-only">(current)</span></a>
                     </li> --}}
-            <li class="nav-item">
-            <a class="nav-link" href="{{ url('/invitation')}}">Invitation</a>
-                    </li>
+           
             <!-- <li class="nav-item">
                 <a class="nav-link" href="{{ url('/bidderlist')}}">Bidders</a>
                     </li>
             <li class="nav-item">
                     <a class="nav-link" href="{{ url('/postqual')}}">Qualification</a>
                     </li> -->
-            {{-- <li class="nav-item">
-                    <a class="nav-link" href="/purchaseorder">Purchase Order</a>
-                    </li> --}}
+        
+            @if(Auth::check())
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url('/invitation')}}">Invitation</a>
+                    </li>
+                <li class="nav-item">      
+                        <a class="nav-link pull-right" href="{{ url('/logout')}}">Logout</a>
+                </li>
+            @endif
         </ul>
     </div>
     {{-- <div class="flex-center position-ref full-height">

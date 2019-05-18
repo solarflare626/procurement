@@ -16,6 +16,7 @@ use App\invitation;
 use App\bidder;
 use App\actual_bidding;
 use App\invitation_lot;
+use Auth;
 use Illuminate\Http\Request;
 Auth::routes();
 
@@ -39,7 +40,10 @@ Route::get('/bidding', 'PagesController@bidding');
 Route::get('/bidderlist', 'PagesController@bidderlist');
 Route::get('/summary', 'PagesController@summary');
 Route::get('/postqual', 'PagesController@postqual');
-
+Route::get('logout', function(Request $request){
+    Auth::logout();
+    return redirect('/login');
+});
 // Route::get('/', 'lotsController@index');
 
 // Route::resource('lots','lotsController');
