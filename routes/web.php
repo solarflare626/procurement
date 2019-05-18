@@ -13,6 +13,8 @@
 use App\lot;
 use App\App_items;
 use App\invitation;
+use App\bidder;
+use App\actual_bidding;
 use App\invitation_lot;
 use Illuminate\Http\Request;
 Auth::routes();
@@ -58,6 +60,32 @@ Route::post('/api/item/{item}/assign/lot/{lot}', function ($itemID,$lotNumber) {
     return response()->json($item);
 });
 
+Route::post('/api/acutal-bidding/update', function (Request $request) {
+   
+    $item = actual_bidding::find($request->id);
+
+    if($request->amount)
+        $item->update(
+            array('amount'=>$request->amount)
+        );
+    if($request->receiver)
+        $item->update(
+            array('receiver'=>$request->receiver)
+        );
+    if($request->status){
+        $item->update(
+            array('status'=>$request->status,'submitted'=>true)
+        );
+        $item = actual_bidding::find($request->id);
+
+    }
+    if($request->notice)
+        $item->update(
+            array('notice'=>$request->notice,'submitted'=>true)
+        );
+    return $item;
+});
+
 Route::get('/api/lots/{lot}', function (lot $lot) {
     
     $lot->items = $lot->items();
@@ -75,7 +103,7 @@ Route::post('/createinvitation',  function (Request $request) {
         'fund_source' => $request->input('fund_source'),
         'bidder_fee' => $request->input('bidder_fee'),
         'delivery_period' => $request->input('delivery_period'),
-        'delivery_status' => 'pending'
+        'delivery_status' => 'pre-bidding'
     ));
     return redirect('invitations/'.$invitation->id.'/assign/lots');;
 });
@@ -89,4 +117,76 @@ Route::post('/invitations/{invitation}/assign/lots/submit',  function (Request $
         ));
     }
     return redirect('invitation/');
+});
+
+Route::get('/invitations/{invitation}/pre-bidding',  function (Request $request, invitation $invitation) {
+
+    $title= "List of Bidders";
+    $bidders = $invitation->bidders()->get();
+
+    return view('pages.addbidders',[
+        'invitation' => $invitation,
+        'title' => $title,
+        'bidders' =>$bidders
+
+    ]);
+});
+
+Route::get('/invitations/{invitation}/actual-bidding',  function (Request $request, invitation $invitation) {
+
+    $title= "List of Actual Bidders";
+    $actual_biddings = $invitation->actual_biddings()->get();
+
+    return view('pages.actual-bidding',[
+        'invitation' => $invitation,
+        'title' => $title,
+        'actual_biddings' =>$actual_biddings
+
+    ]);
+});
+
+Route::get('/invitations/{invitation}/post-qualification',  function (Request $request, invitation $invitation) {
+
+    $title= "List of Actual Bidders";
+    $actual_biddings = $invitation->actual_biddings()->get();
+
+    return view('pages.post-qualification',[
+        'invitation' => $invitation,
+        'title' => $title,
+        'actual_biddings' =>$actual_biddings
+
+    ]);
+});
+
+
+Route::post('/invitations/{invitation}/pre-bidding',  function (Request $request, invitation $invitation) {
+
+    $title= "List of Bidders";
+    $bidder = bidder::create(array(
+        'csi_no' => $request->input('csi_no'),
+        'company_name' => $request->input('company_name'),
+        'address' => $request->input('address'),
+        'contact_person' => $request->input('contact_person'),
+        'contact_no' => $request->input('contact_no'),
+        'email' => $request->input('email'),
+        'invitation_id' => $invitation->id,
+    ));
+    $bidders = $invitation->bidders()->get();
+    return view('pages.addbidders',[
+        'invitation' => $invitation,
+        'title' => $title,
+        'bidders' =>$bidders
+
+    ]);
+});
+
+Route::post('/invitations/{invitation}/attendance',  function (Request $request, invitation $invitation) {
+
+    foreach ($request->input('attendance') as $key => $bidder) {
+        actual_bidding::firstOrCreate(array(
+            'bidder_id' => $bidder,
+            'invitation_id' => $invitation->id,
+        ));
+    }
+    return redirect('/invitations/'.$invitation->id.'/actual-bidding');
 });

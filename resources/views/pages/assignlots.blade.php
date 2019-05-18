@@ -1,6 +1,13 @@
 @extends('layouts.app')
     
 @section('content')
+    @php
+        if(isset($_GET['mode'])){
+            $mode = $_GET['mode'];
+        }else{
+            $mode = null;
+        }
+    @endphp
     <br>
 
     <div class="container">
@@ -13,7 +20,16 @@
         <h1>{{$title}} to {{$invitation->project_name}}</h1>
 
     </div>
-            <button id="btn-add-slot" class="btn btn-primary pull-right">Add slot</button>
+            
+            <div class="pull-right">
+                @if($mode == "edit")
+                    <a href="/invitations/{{$invitation->id}}/pre-bidding" class="btn btn-primary">Pre Bidding</a>
+                    <a href="/invitations/{{$invitation->id}}/actual-bidding" class="btn btn-primary">Actual Bidding</a>
+                    <a href="/invitations/{{$invitation->id}}/post-qualification" class="btn btn-primary">Post Qualification</a>
+                @endif
+                <button id="btn-add-slot" class="btn btn-primary">Add slot</button>
+            </div>
+            
             <br>
             <br>
             <br>
