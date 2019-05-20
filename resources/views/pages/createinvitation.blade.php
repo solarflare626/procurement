@@ -4,7 +4,7 @@
     <br>
 
     <div class="container">
-    <a href="/">
+    <a href="invitation">
         <button type="button" class="btn btn-default">Go back</button>
     </a>
 

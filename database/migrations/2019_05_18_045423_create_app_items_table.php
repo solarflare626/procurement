@@ -24,7 +24,8 @@ class CreateAppItemsTable extends Migration
             $table->string('cost_center');
             $table->string('procurement_mode');
             $table->integer('acc_no');
-            $table->unsignedBigInteger('lot_id');
+            $table->boolean('disabled')->nullable();
+            $table->unsignedBigInteger('lot_id')->nullable();
             $table->foreign('lot_id')->references('id')->on('lots')->onDelete('cascade');
             $table->timestamps();
         });

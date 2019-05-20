@@ -3,7 +3,7 @@
 @section('content')
 <br>
     <div class="text-center">
-        <h1>{{$title}}</h1>
+        <h1>Opening of Bids</h1>
     </div>
 <br>
     <div class="container-fluid">
@@ -13,7 +13,7 @@
         <table class="table table-hover">
             <thead class="thead-light">
             <tr>
-                <th scope="col" style="width:5%"><center>CSI No.</center></th>
+                <th scope="col" style="width:5%"><center>Reference No.</center></th>
                 <th scope="col" style="width:12%"><center>Supplier</center></th>
                 <th scope="col" style="width:4%"><center>Email</center></th>
                 <th scope="col" style="width:12%"><center>Date & Time</center></th>

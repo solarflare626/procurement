@@ -11,7 +11,7 @@
     <br>
 
     <div class="container">
-    <a href="/">
+    <a href="/invitation">
         <button type="button" class="btn btn-default">Go back</button>
     </a>
 
@@ -23,8 +23,8 @@
             
             <div class="pull-right">
                 @if($mode == "edit")
-                    <a href="/invitations/{{$invitation->id}}/pre-bidding" class="btn btn-primary">Pre Bidding</a>
-                    <a href="/invitations/{{$invitation->id}}/actual-bidding" class="btn btn-primary">Actual Bidding</a>
+                    <a href="/invitations/{{$invitation->id}}/pre-bidding" class="btn btn-primary">Bid Opening</a>
+                    {{-- <a href="/invitations/{{$invitation->id}}/actual-bidding" class="btn btn-primary">Actual Bidding</a> --}}
                     <a href="/invitations/{{$invitation->id}}/post-qualification" class="btn btn-primary">Post Qualification</a>
                 @endif
                 <button id="btn-add-slot" class="btn btn-primary">Add slot</button>
@@ -80,8 +80,6 @@
                 </div>
             
             </div>
-            <br>
-            <br>
             <br>
             <div class="row">
                 <button type="submit" class="btn btn-primary center-block">Submit</button>

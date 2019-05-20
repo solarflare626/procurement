@@ -16,7 +16,7 @@ use App\invitation;
 use App\bidder;
 use App\actual_bidding;
 use App\invitation_lot;
-use Auth;
+
 use Illuminate\Http\Request;
 Auth::routes();
 
@@ -54,12 +54,16 @@ Route::get('logout', function(Request $request){
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::post('/api/item/{item}/assign/lot/{lot}', function ($itemID,$lotNumber) {
-    $lot = lot::firstOrCreate(['lot_no' => $lotNumber]);
+Route::post('/api/item/{item}/assign/lot/submit', function (Request $request,$itemID) {
+	$lotID = null;
+	if($request->lot){
+		$lotID = lot::firstOrCreate(['lot_no' => $request->lot])->id;
+	}
+    
     $item = App_items::find($itemID);
 
     $item->update(
-        array('lot_id'=>$lot->id)
+        array('lot_id'=>$lotID)
     );
     return response()->json($item);
 });
@@ -119,6 +123,13 @@ Route::post('/invitations/{invitation}/assign/lots/submit',  function (Request $
             'invitation_id' => $invitation->id,
             'lot_id' => $lot
         ));
+        $cur_lot = lot::find($lot);
+        $items =  $cur_lot->items();
+        foreach ($items as $key => $item) {
+            $item->update(array(
+                'disabled' => true
+            ));
+        }
     }
     return redirect('invitation/');
 });
@@ -186,11 +197,34 @@ Route::post('/invitations/{invitation}/pre-bidding',  function (Request $request
 
 Route::post('/invitations/{invitation}/attendance',  function (Request $request, invitation $invitation) {
 
-    foreach ($request->input('attendance') as $key => $bidder) {
-        actual_bidding::firstOrCreate(array(
-            'bidder_id' => $bidder,
-            'invitation_id' => $invitation->id,
-        ));
+    $attendance = $request->input('attendance');
+    $actual_biddings =actual_bidding::where(array(
+        'invitation_id' => $invitation->id,
+    ))->get();
+    if($attendance){
+        foreach ($actual_biddings as $key => $actual_bidding) {
+            $found = false;
+            foreach ($attendance as $key => $bidder) {
+                if($actual_bidding->bidder_id == $bidder)
+                    $found = true;
+                
+            }
+
+            if($found == false){
+                $actual_bidding->delete();
+            }
+        }
+        
+        foreach ($attendance as $key => $bidder) {
+            actual_bidding::firstOrCreate(array(
+                'bidder_id' => $bidder,
+                'invitation_id' => $invitation->id,
+            ));
+        }
+    }else{
+        foreach ($actual_biddings as $key => $actual_bidding) {
+            $actual_bidding->delete();
+        }
     }
     return redirect('/invitations/'.$invitation->id.'/actual-bidding');
 });

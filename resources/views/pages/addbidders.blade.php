@@ -3,7 +3,7 @@
 @section('content')
 <br>
     <div class="text-center">
-        <h1>{{$title}}</h1>
+        <h1>Bidder's Attendance</h1>
     </div>
 <br>
     <div class="container-fluid">
@@ -16,14 +16,15 @@
         <table class="table table-hover">
             <thead class="thead-light">
             <tr>
-                <th scope="col" style="width:5%"><center>CSI No.</center></th>
+                <th scope="col" style="width:5%"><center>Reference No.</center></th>
                 <th scope="col" style="width:12%"><center>Company</center></th>
-                <th scope="col" style="width:10%"><center>Address</center></th>
+                <th scope="col" style="width:15%"><center>Address</center></th>
                 <th scope="col" style="width:15%"><center>Contact Person</center></th>
                 <th scope="col" style="width:8%"><center>Contact No.</center></th>
-                <th scope="col" style="width:4%"><center>Email Address</center></th>
+                <th scope="col" style="width:1%"><center>Email Address</center></th>
                 <th scope="col" style="width:12%"><center>Date & Time</center></th>
                 <th scope="col" style="width:12%"><center>Attendance</center></th>
+                {{-- Lot Number instead of Attendance (inputable) --}}
             </tr>
             </thead>
             <tbody>
