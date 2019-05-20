@@ -37,4 +37,13 @@ class invitation extends Model
 
         return $bidders;
     }
+    public function bidder_lots_of($lot)
+    {
+       
+        $bidder_lots = bidder_lot::where(array(
+            'lot_id' => $lot,
+            'invitation_id'=> $this->id
+        ))->get();
+        return $bidder_lots;
+    }
 }

@@ -16,6 +16,7 @@
                 <th scope="col" style="width:5%"><center>Reference No.</center></th>
                 <th scope="col" style="width:12%"><center>Supplier</center></th>
                 <th scope="col" style="width:4%"><center>Email</center></th>
+                <th scope="col" style="width:4%"><center>Lots</center></th>
                 <th scope="col" style="width:12%"><center>Date & Time</center></th>
                 <th scope="col" style="width:12%"><center>Amount of Bid</center></th>
                 <th scope="col" style="width:12%"><center>Receiver's Name</center></th>
@@ -32,6 +33,7 @@
                     <td data-toggle="tooltip" title="Items!"><center>{{$bidder->csi_no}}</center></td>
                     <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_person}}</center></td>
                       <td data-toggle="tooltip" title="Items!"><center>{{$bidder->email}}</center></td>
+                      <td data-toggle="tooltip" title="Items!"><center>{{$bidder->showLots()}}</center></td>
                     <td data-toggle="tooltip" title="Items!"><center>{{$bidder->created_at}}</center></td>
                     <td data-toggle="tooltip" title="Items!"><center><input type="number" name="amount" id="{{$actual_bidding->id}}" class="amount" value="{{$actual_bidding->amount}}"></center></td>
                     <td data-toggle="tooltip" title="Items!"><center><input type="text" name="receiver" id="{{$actual_bidding->id}}" class="receiver" value="{{$actual_bidding->receiver}}"></center></td>

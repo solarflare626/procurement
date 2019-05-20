@@ -15,7 +15,7 @@ class CreateLotsTable extends Migration
     {
         Schema::create('lots', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('lot_no')->unique->nullable();
+            $table->integer('lot_no')->unique()->nullable();
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ use App\lot;
 use App\App_items;
 use App\invitation;
 use App\bidder;
+use App\bidder_lot;
 use App\actual_bidding;
 use App\invitation_lot;
 
@@ -197,34 +198,69 @@ Route::post('/invitations/{invitation}/pre-bidding',  function (Request $request
 
 Route::post('/invitations/{invitation}/attendance',  function (Request $request, invitation $invitation) {
 
-    $attendance = $request->input('attendance');
+    $bidders = $request->input('bidders');
+    $dates = $request->input('dates');
+    $lots = str_replace(' ','',$request->input('lots')); 
     $actual_biddings =actual_bidding::where(array(
         'invitation_id' => $invitation->id,
     ))->get();
-    if($attendance){
-        foreach ($actual_biddings as $key => $actual_bidding) {
-            $found = false;
-            foreach ($attendance as $key => $bidder) {
-                if($actual_bidding->bidder_id == $bidder)
-                    $found = true;
-                
-            }
 
-            if($found == false){
-                $actual_bidding->delete();
-            }
-        }
+    foreach ($bidders as $index => $bidder) {
+        actual_bidding::firstOrCreate(array(
+            'bidder_id' => $bidder,
+            'invitation_id' => $invitation->id,
+        ));
+        $cur_bidder = bidder::find($bidder);
         
-        foreach ($attendance as $key => $bidder) {
-            actual_bidding::firstOrCreate(array(
-                'bidder_id' => $bidder,
+        $cur_bidder->update(array(
+            'date' => $dates[$index]
+        ));
+
+        $bidder_lots =bidder_lot::where('bidder_id', '=', $cur_bidder->id)->get();
+
+        foreach ($bidder_lots as $key => $bidder_lot) {
+            $bidder_lot->delete();
+        }
+
+        $cur_lots = explode(',',$lots[$index]);
+        foreach ($cur_lots as $key => $cur_lot) {
+            $lot = lot::where('lot_no','=',$cur_lot)->first();
+            bidder_lot::create(array(
                 'invitation_id' => $invitation->id,
+                'lot_id' => $lot->id,
+                'bidder_id' => $cur_bidder->id,
             ));
         }
-    }else{
-        foreach ($actual_biddings as $key => $actual_bidding) {
-            $actual_bidding->delete();
-        }
+        
+
+        
+        
     }
+    
+    // if($attendance){
+    //     foreach ($actual_biddings as $key => $actual_bidding) {
+    //         $found = false;
+    //         foreach ($attendance as $key => $bidder) {
+    //             if($actual_bidding->bidder_id == $bidder)
+    //                 $found = true;
+                
+    //         }
+
+    //         if($found == false){
+    //             $actual_bidding->delete();
+    //         }
+    //     }
+        
+    //     foreach ($attendance as $key => $bidder) {
+    //         actual_bidding::firstOrCreate(array(
+    //             'bidder_id' => $bidder,
+    //             'invitation_id' => $invitation->id,
+    //         ));
+    //     }
+    // }else{
+    //     foreach ($actual_biddings as $key => $actual_bidding) {
+    //         $actual_bidding->delete();
+    //     }
+    // }
     return redirect('/invitations/'.$invitation->id.'/actual-bidding');
 });

@@ -47,6 +47,14 @@
  <div class="float-left">
 <p><b>LOT {{$cur_lot->lot_no}}<b></p>
  </div>
+ <div class="float-right">
+        <span><b>Suppliers: <b></span>
+         <!-- Trigger the modal with a button -->
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal-{{$cur_lot->id}}-qualified">Qualified</button>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal-{{$cur_lot->id}}-notqualified">Not Qualified</button>
+ </div>
+ <br>
+ <br>
  <table class="table table-hover">
 <thead class="thead-light">
 <tr>
@@ -74,6 +82,115 @@
 @endforeach
 </tbody>
 </table>
+@if($mode == "edit")
+    
+    @php
+      $bidder_lots = $invitation->bidder_lots_of( $cur_lot->id);
+    @endphp
+        <!-- Modal -->
+        <div id="myModal-{{$cur_lot->id}}-qualified" class="modal fade" role="dialog">
+            <div class="modal-dialog"  style="display: table">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4>Qualified Suppliers</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+               
+                </div>
+                <div class="modal-body">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                            <th scope="col" style="width:5%"><center>Reference No.</center></th>
+                            <th scope="col" style="width:20%"><center>Company</center></th>
+                            <th scope="col" style="width:15%"><center>Address</center></th>
+                            <th scope="col" style="width:5%"><center>Contact Person</center></th>
+                            <th scope="col" style="width:20%"><center>Contact No.</center></th>
+                            <th scope="col" style="width:8%"><center>Email</center></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($bidder_lots as $bidder_lot)
+                                    @php
+                                      $bidder =  $bidder_lot->bidder();
+                                    @endphp
+                                    @if ($bidder->actual_bidding()->status == "Qualified")
+                                        <tr>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->csi_no}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->company_name}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->address}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_person}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_no}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->email}}</center></td>
+                                        </tr>
+                                    @endif
+                                    
+                                @endforeach
+                            </tbody>
+                            </table>
+                    
+                {{-- <p>Some text in the modal.</p> --}}
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        
+            </div>
+        </div>
+     
+    <!-- Modal -->
+    <div id="myModal-{{$cur_lot->id}}-notqualified" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="display: table;">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4>Not Qualified Suppliers: </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                            <th scope="col" style="width:5%"><center>Reference No.</center></th>
+                            <th scope="col" style="width:20%"><center>Company</center></th>
+                            <th scope="col" style="width:15%"><center>Address</center></th>
+                            <th scope="col" style="width:5%"><center>Contact Person</center></th>
+                            <th scope="col" style="width:20%"><center>Contact No.</center></th>
+                            <th scope="col" style="width:8%"><center>Email</center></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($bidder_lots as $bidder_lot)
+                                    @php
+                                        $bidder =  $bidder_lot->bidder();
+                                    @endphp
+                                    @if ($bidder->actual_bidding()->status == "Not Qualified")
+                                        <tr>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->csi_no}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->company_name}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->address}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_person}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_no}}</center></td>
+                                                <td data-toggle="tooltip" title="Items!"><center>{{$bidder->email}}</center></td>
+                                        </tr>
+                                    @endif
+                                    
+                                @endforeach
+                            </tbody>
+                        </table>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        
+            </div>
+        </div>
+    
+@endif
 </div>
                     @endforeach
                             

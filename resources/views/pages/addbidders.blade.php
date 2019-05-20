@@ -23,7 +23,7 @@
                 <th scope="col" style="width:8%"><center>Contact No.</center></th>
                 <th scope="col" style="width:1%"><center>Email Address</center></th>
                 <th scope="col" style="width:12%"><center>Date & Time</center></th>
-                <th scope="col" style="width:12%"><center>Attendance</center></th>
+                <th scope="col" style="width:12%"><center>Lot</center></th>
                 {{-- Lot Number instead of Attendance (inputable) --}}
             </tr>
             </thead>
@@ -38,8 +38,8 @@
                     <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_person}}</center></td>
                     <td data-toggle="tooltip" title="Items!"><center>{{$bidder->contact_no}}</center></td>
                     <td data-toggle="tooltip" title="Items!"><center>{{$bidder->email}}</center></td>
-                    <td data-toggle="tooltip" title="Items!"><center>{{$bidder->created_at}}</center></td>
-                    <td data-toggle="tooltip" title="Items!"><center><input type="checkbox" name="attendance[]" value="{{$bidder->id}}"></center></td>
+                <td data-toggle="tooltip" title="Items!"><center><input type="hidden" name="bidders[]" value="{{$bidder->id}}"><input type="date" value="{{$bidder->date?$bidder->date:date('Y-m-d')}}" name="dates[]" ></center></td>
+                    <td data-toggle="tooltip" title="Items!"><center><input type="text" name="lots[]" value="{{$bidder->showLots()}}"></center></td>
                 </tr>
             @endforeach
             </tbody>
